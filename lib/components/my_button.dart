@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MyButton extends StatelessWidget {
+  final String text;
   final Function()? onTap;
 
   const MyButton({
     super.key,
+    required this.text,
     required this.onTap,
   });
 
@@ -22,7 +24,7 @@ class MyButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            "Sign In",
+            text,
             style: GoogleFonts.poppins(
               color: Colors.white,
               fontWeight: FontWeight.bold,

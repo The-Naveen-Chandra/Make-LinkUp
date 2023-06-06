@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:linkup_app/screens/home_screen.dart';
-import 'package:linkup_app/screens/login_screen.dart';
+import 'package:linkup_app/screens/login_or_register_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
@@ -19,7 +19,7 @@ class AuthScreen extends StatelessWidget {
 
           // user is Not logged in
           else {
-            return LoginScreen();
+            return const LoginOrRegisterScreen();
           }
         },
       ),

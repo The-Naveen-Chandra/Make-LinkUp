@@ -6,24 +6,25 @@ import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final Function()? onPress;
-  const LoginScreen({
+  const RegisterScreen({
     super.key,
     this.onPress,
   });
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   // text editing controller
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   // sign in user method
-  void signInUser() async {
+  void signUpUser() async {
     // show loading circle
     showDialog(
       context: context,
@@ -34,12 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
 
-    // try sign in
+    // try creating the user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      // check if password is confirmed
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        // show error message, password don't match !
+        showErrorMsg("Password don't match !");
+      }
       // pop the context
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
@@ -75,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Center(
             child: Column(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
 
                 // logo
                 const Icon(
@@ -84,11 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   size: 100,
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
 
-                // welcome back, you've been missed!
+                // Let's create an account for you !
                 Text(
-                  "Welcome back, you've been missed ?",
+                  "Let's create an account for you !",
                   style: GoogleFonts.poppins(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -115,28 +122,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 10),
 
-                // forgot password ?
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Forgot password ?",
-                        style: GoogleFonts.poppins(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
+                // confirm password textfield
+                MyTextfield(
+                  controller: confirmPasswordController,
+                  hintText: "Confirm Password",
+                  obscureText: true,
                 ),
+
+                const SizedBox(height: 5),
+
+                // // forgot password ?
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       Text(
+                //         "Forgot password ?",
+                //         style: GoogleFonts.poppins(
+                //           color: Colors.grey[600],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
 
                 const SizedBox(height: 25.0),
 
                 // sign in button
                 MyButton(
-                  text: "Sign In",
-                  onTap: signInUser,
+                  text: "Sign Up",
+                  onTap: signUpUser,
                 ),
 
                 const SizedBox(height: 50),
@@ -189,12 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 35),
 
-                // not a member?  register now
+                // Already have an account ? Login Now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Not a member ?",
+                      "Already have an account ?",
                       style: GoogleFonts.poppins(
                         color: Colors.grey[700],
                       ),
@@ -203,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: widget.onPress,
                       child: Text(
-                        "Register now",
+                        "Login Now",
                         style: GoogleFonts.poppins(
                           color: Colors.blue,
                         ),
