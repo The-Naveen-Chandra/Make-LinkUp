@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
+import 'package:linkup_app/components/square_tile.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -70,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Forgot password ?",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           color: Colors.grey[600],
                         ),
                       ),
@@ -85,11 +86,75 @@ class LoginScreen extends StatelessWidget {
                   onTap: signInUser,
                 ),
 
+                const SizedBox(height: 50),
+
                 // or continue with
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "Or continue with",
+                          style: GoogleFonts.poppins(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          thickness: 0.5,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 35),
 
                 // google + apple sign in button
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // google button
+                    SquareTile(imgPath: "assets/images/google.png"),
+
+                    SizedBox(width: 20),
+
+                    // apple button
+                    SquareTile(imgPath: "assets/images/apple-logo.png"),
+                  ],
+                ),
+
+                const SizedBox(height: 35),
 
                 // not a member?  register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Not a member ?",
+                      style: GoogleFonts.poppins(
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "Register now",
+                      style: GoogleFonts.poppins(
+                        color: Colors.blueAccent,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
