@@ -1,18 +1,90 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   // text editing controller
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   // sign in user method
-  void signInUser() {}
+  void signInUser() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CupertinoActivityIndicator(),
+        );
+      },
+    );
+
+    // try sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // pop the context
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // pop the context
+      Navigator.pop(context);
+      // WRONG Email
+      if (e.code == 'user-not-found') {
+        // show error to user
+        wrongEmailMsg();
+
+        // WRONG Password
+      } else if (e.code == 'wrong-password') {
+        // show error to user
+        wrongPasswordMsg();
+      }
+    }
+  }
+
+  // wrong email message popup
+  void wrongEmailMsg() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Center(
+            child: Text(
+              "Incorrect Email !",
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // wrong password message popup
+  void wrongPasswordMsg() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          title: Center(
+            child: Text(
+              "Incorrect Password !",
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +119,8 @@ class LoginScreen extends StatelessWidget {
 
                 // user textfield
                 MyTextfield(
-                  controller: usernameController,
-                  hintText: "Username",
+                  controller: emailController,
+                  hintText: "Email",
                   obscureText: false,
                 ),
 
