@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "601666053928",
+    "project_id": "make-linkup",
+    "storage_bucket": "make-linkup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601666053928:android:c50a745109ac61b1c6521d",
+        "android_client_info": {
+          "package_name": "com.example.linkup_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601666053928-vl7f0n4jsh4p9f74ald3v3cc267mij0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSDTWjgqaoERGNkiWlU3DOKC0a0_NuM6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601666053928-vl7f0n4jsh4p9f74ald3v3cc267mij0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
