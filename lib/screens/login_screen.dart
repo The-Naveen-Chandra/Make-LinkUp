@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
+import 'package:linkup_app/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function()? onPress;
@@ -174,16 +175,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 35),
 
                 // google + apple sign in button
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // google button
-                    SquareTile(imgPath: "assets/images/google.png"),
+                    SquareTile(
+                      onTap: () => AuthService().signInWithGoogle(),
+                      imgPath: "assets/images/google.png",
+                    ),
 
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
 
                     // apple button
-                    SquareTile(imgPath: "assets/images/apple-logo.png"),
+                    SquareTile(
+                      onTap: () {},
+                      imgPath: "assets/images/apple-logo.png",
+                    ),
                   ],
                 ),
 
