@@ -47,34 +47,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // try creating the user
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-
-      if (userCredential.user != null) {
-        if (context.mounted) Navigator.pop(context);
-
-        // Navigate to the Username and Bio screen
-        // ignore: use_build_context_synchronously
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UsernameAndBioScreen(
-              email: userCredential.user!.email.toString(),
-            ),
-          ),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      // pop the context
-      Navigator.pop(context);
-      // show error message
-      showErrorMsg(e.code);
-    }
+    // Navigate to the Username and Bio screen
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UsernameAndBioScreen(
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      ),
+    );
   }
 
   // error email message popup
@@ -258,9 +241,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 class UsernameAndBioScreen extends StatefulWidget {
   final String email;
+  final String password;
   const UsernameAndBioScreen({
     super.key,
     required this.email,
+    required this.password,
   });
 
   @override
@@ -282,23 +267,27 @@ class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
     );
 
     try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: widget.email,
+        password: widget.password,
+      );
+
       await FirebaseFirestore.instance
           .collection('Users')
-          .doc(widget.email)
+          .doc(userCredential.user!.email)
           .set({
         'username': usernameController.text,
         'bio': bioController.text,
       });
 
       if (context.mounted) Navigator.pop(context);
-      if (context.mounted) {
-        Navigator.pop(
-            context); // Pop back to the previous screen (RegisterScreen)
-      }
+      if (context.mounted) Navigator.pop(context);
     } catch (e) {
       Navigator.pop(context);
       showErrorMsg(e.toString());
     }
+    if (context.mounted) Navigator.pop(context);
   }
 
   void showErrorMsg(String message) {
@@ -316,19 +305,14 @@ class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterScreen(),
-              ),
-            );
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        //   icon: const Icon(
+        //     Icons.arrow_back_ios_new,
+        //   ),
+        // ),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
