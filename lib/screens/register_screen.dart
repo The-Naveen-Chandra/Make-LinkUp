@@ -277,8 +277,8 @@ class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
           .collection('Users')
           .doc(userCredential.user!.email)
           .set({
-        'username': usernameController.text,
-        'bio': bioController.text,
+        'Username': usernameController.text,
+        'Bio': bioController.text,
       });
 
       if (context.mounted) Navigator.pop(context);
