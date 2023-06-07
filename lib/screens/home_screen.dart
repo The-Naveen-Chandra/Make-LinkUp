@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/linkup_post.dart';
+import 'package:linkup_app/components/my_drawer.dart';
 import 'package:linkup_app/components/my_textfield.dart';
+import 'package:linkup_app/screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,6 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // navigate to profile screen
+  void goToProfileScreen() {
+    // pop menu drawer
+    Navigator.pop(context);
+
+    // go to profile page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProfileScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      drawer: MyDrawer(
+        onProfileTap: goToProfileScreen,
+        onSignOut: signOutUser,
       ),
       body: Column(
         children: [
