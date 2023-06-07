@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              Icons.bakery_dining_rounded,
+              CupertinoIcons.link,
               color: Colors.white,
             ),
             const SizedBox(
@@ -78,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               "LinkUp",
               style: GoogleFonts.poppins(
-                  color: Colors.white, fontWeight: FontWeight.w500),
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linkup_app/components/my_alert_dialog.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
@@ -56,13 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Center(
-            child: Text(
-              message,
-            ),
-          ),
-        );
+        return MyAlertDialog(content: message);
       },
     );
   }
@@ -80,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // logo
                 const Icon(
-                  Icons.bakery_dining_rounded,
+                  CupertinoIcons.link_circle_fill,
                   // Icons.link
                   size: 100,
                 ),

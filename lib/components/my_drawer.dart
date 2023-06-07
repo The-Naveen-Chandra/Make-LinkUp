@@ -16,13 +16,14 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: Colors.grey[900],
       surfaceTintColor: Colors.transparent,
+      width: MediaQuery.of(context).size.width / 1.4,
       child: Column(
         children: [
           // header
           const DrawerHeader(
             child: Icon(
-              Icons.bakery_dining,
-              size: 150,
+              CupertinoIcons.link_circle_fill,
+              size: 100,
               color: Colors.white,
             ),
           ),
@@ -41,7 +42,7 @@ class MyDrawer extends StatelessWidget {
             onTap: onProfileTap,
           ),
 
-          // Spacer(),
+          const Spacer(),
 
           // logout list tile
           MyListTile(
@@ -49,6 +50,7 @@ class MyDrawer extends StatelessWidget {
             text: "Logout",
             onTap: onSignOut,
           ),
+          const SizedBox(height: 25),
         ],
       ),
     );
