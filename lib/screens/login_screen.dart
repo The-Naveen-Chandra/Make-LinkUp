@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         password: passwordController.text,
       );
       // pop the context
-      Navigator.pop(context);
+      if (context.mounted) Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // pop the context
       Navigator.pop(context);
