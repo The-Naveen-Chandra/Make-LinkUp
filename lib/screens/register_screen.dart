@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,20 +38,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
     );
 
+    // check if password is confirmed
+    if (passwordController.text != confirmPasswordController.text) {
+      // pop loading circle
+      Navigator.pop(context);
+      // show error to user
+      showErrorMsg("Password don't match !");
+      return;
+    }
+
     // try creating the user
     try {
-      // check if password is confirmed
-      if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      if (userCredential.user != null) {
+        if (context.mounted) Navigator.pop(context);
+
+        // Navigate to the Username and Bio screen
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UsernameAndBioScreen(
+              email: userCredential.user!.email.toString(),
+            ),
+          ),
         );
-      } else {
-        // show error message, password don't match !
-        showErrorMsg("Password don't match !");
       }
-      // pop the context
-      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // pop the context
       Navigator.pop(context);
@@ -231,6 +249,128 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class UsernameAndBioScreen extends StatefulWidget {
+  final String email;
+  const UsernameAndBioScreen({
+    super.key,
+    required this.email,
+  });
+
+  @override
+  State<UsernameAndBioScreen> createState() => _UsernameAndBioScreen();
+}
+
+class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
+  final usernameController = TextEditingController();
+  final bioController = TextEditingController();
+
+  void saveProfile() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CupertinoActivityIndicator(),
+        );
+      },
+    );
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(widget.email)
+          .set({
+        'username': usernameController.text,
+        'bio': bioController.text,
+      });
+
+      if (context.mounted) Navigator.pop(context);
+      if (context.mounted) {
+        Navigator.pop(
+            context); // Pop back to the previous screen (RegisterScreen)
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      showErrorMsg(e.toString());
+    }
+  }
+
+  void showErrorMsg(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return MyAlertDialog(content: message);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RegisterScreen(),
+              ),
+            );
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 25),
+
+              // logo
+              const Icon(
+                CupertinoIcons.link_circle_fill,
+                // Icons.link
+                size: 100,
+              ),
+              const SizedBox(height: 25),
+
+              // Fill in your username and bio
+              Text(
+                "Fill in your username and bio",
+                style: GoogleFonts.poppins(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 25),
+              MyTextfield(
+                controller: usernameController,
+                hintText: "Username",
+                obscureText: false,
+              ),
+              const SizedBox(height: 10),
+              MyTextfield(
+                controller: bioController,
+                hintText: "Bio",
+                obscureText: false,
+              ),
+              const SizedBox(height: 25),
+              MyButton(
+                text: "Save",
+                onTap: saveProfile,
+              ),
+            ],
           ),
         ),
       ),
