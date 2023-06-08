@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/linkup_post.dart';
 import 'package:linkup_app/components/my_drawer.dart';
 import 'package:linkup_app/components/my_textfield.dart';
+import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -118,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         message: post['Message'],
                         user: post['UserEmail'],
                         postId: post.id,
+                        time: formatData(post['TimeStamp']),
                         likes: List<String>.from(post['Likes'] ?? []),
                       );
                     },
