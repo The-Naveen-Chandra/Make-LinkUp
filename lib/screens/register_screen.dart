@@ -73,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -302,7 +302,7 @@ class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         // leading: IconButton(

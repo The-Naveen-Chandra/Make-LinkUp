@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:linkup_app/screens/auth_screen.dart';
+import 'package:linkup_app/themes/dark_theme.dart';
+import 'package:linkup_app/themes/light_theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,10 +22,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LinkUp',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: const AuthScreen(),
     );
   }

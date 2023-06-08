@@ -110,7 +110,9 @@ class _LinkUpPostState extends State<LinkUpPost> {
             },
             child: Text(
               "Cancel",
-              style: GoogleFonts.poppins(),
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
 
@@ -128,7 +130,9 @@ class _LinkUpPostState extends State<LinkUpPost> {
             },
             child: Text(
               "Post",
-              style: GoogleFonts.poppins(),
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
             ),
           ),
         ],
@@ -146,7 +150,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
       ),
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   "Welcome back, you've been missed ?",
                   style: GoogleFonts.poppins(
-                    color: Colors.grey[700],
+                    color: Colors.grey[600],
                     fontSize: 16,
                   ),
                 ),

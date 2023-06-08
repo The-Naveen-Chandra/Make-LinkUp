@@ -92,17 +92,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.grey[900],
+        leading: const BackButton(),
         centerTitle: true,
         title: Text(
           "Profile",
           style: GoogleFonts.poppins(
-            color: Colors.white,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -145,6 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(
                     "My details",
                     style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
                       color: Colors.grey[600],
                     ),
                   ),
@@ -166,16 +164,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 const SizedBox(height: 50),
 
-                // user posts
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0),
-                  child: Text(
-                    "My details",
-                    style: GoogleFonts.poppins(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
+                // // user posts
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 25.0),
+                //   child: Text(
+                //     "My details",
+                //     style: GoogleFonts.poppins(
+                //       color: Colors.grey[600],
+                //     ),
+                //   ),
+                // ),
               ],
             );
           } else if (snapshot.hasError) {

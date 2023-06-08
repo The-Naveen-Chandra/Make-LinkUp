@@ -23,7 +23,9 @@ class MyAlertDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           child: Text(
             'OK',
-            style: GoogleFonts.poppins(),
+            style: GoogleFonts.poppins(
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
         ),
       ],

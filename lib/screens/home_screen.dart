@@ -63,15 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
               CupertinoIcons.link,
-              color: Colors.white,
             ),
             const SizedBox(
               width: 10,
@@ -79,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               "LinkUp",
               style: GoogleFonts.poppins(
-                color: Colors.white,
                 fontWeight: FontWeight.w500,
               ),
             ),
