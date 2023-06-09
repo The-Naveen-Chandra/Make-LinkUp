@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:linkup_app/components/comment_button.dart';
+import 'package:linkup_app/components/delete_button.dart';
 import 'package:linkup_app/components/like_button.dart';
 import 'package:linkup_app/components/my_comment.dart';
 import 'package:linkup_app/helper/helper_methods.dart';
@@ -140,6 +141,79 @@ class _LinkUpPostState extends State<LinkUpPost> {
     );
   }
 
+  // delete post
+  void deletePost() {
+    // show a dialog box for confirmation before deleting the post
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Delete Post",
+          style: GoogleFonts.poppins(),
+        ),
+        content: Text(
+          "Are you sure you want to delete this post ?",
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          // cancel button
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+          ),
+
+          // delete button
+          TextButton(
+            onPressed: () async {
+              // delete the comments form fire store firstly
+              // if we do not delete the comments then then it will present in the fire store forever
+              final commentDocs = await FirebaseFirestore.instance
+                  .collection("User Posts")
+                  .doc(widget.postId)
+                  .collection("Comments")
+                  .get();
+
+              for (var doc in commentDocs.docs) {
+                await FirebaseFirestore.instance
+                    .collection("User Posts")
+                    .doc(widget.postId)
+                    .collection("Comments")
+                    .doc(doc.id)
+                    .delete();
+              }
+
+              // then delete the post
+              FirebaseFirestore.instance
+                  .collection("User Posts")
+                  .doc(widget.postId)
+                  .delete()
+                  .then(
+                    (value) => print("post deleted"),
+                  )
+                  .catchError(
+                    (error) => print("failed to delete post : $error"),
+                  );
+
+              // dismiss the dialog box
+              if (context.mounted) Navigator.pop(context);
+            },
+            child: Text(
+              "Delete",
+              style: GoogleFonts.poppins(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -156,41 +230,52 @@ class _LinkUpPostState extends State<LinkUpPost> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // message and user
-          Column(
+          // linkUp post
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // message
-              Text(
-                widget.message,
-                style: GoogleFonts.poppins(),
-              ),
-
-              const SizedBox(height: 5),
-
-              // current user email
-              Row(
+              // group of text
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // message
                   Text(
-                    widget.user,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
+                    widget.message,
+                    style: GoogleFonts.poppins(),
                   ),
-                  Text(
-                    " . ",
-                    style: GoogleFonts.poppins(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Text(
-                    widget.time,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                    ),
+
+                  const SizedBox(height: 5),
+
+                  // current user email
+                  Row(
+                    children: [
+                      Text(
+                        widget.user,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        " . ",
+                        style: GoogleFonts.poppins(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        widget.time,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+
+              // delete button
+              if (widget.user == currentUser.email)
+                DeleteButton(onTap: deletePost)
             ],
           ),
 
