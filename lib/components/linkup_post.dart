@@ -111,9 +111,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
             },
             child: Text(
               "Cancel",
-              style: GoogleFonts.poppins(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+              style: GoogleFonts.poppins(),
             ),
           ),
 
@@ -131,9 +129,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
             },
             child: Text(
               "Post",
-              style: GoogleFonts.poppins(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+              style: GoogleFonts.poppins(),
             ),
           ),
         ],
@@ -161,9 +157,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Cancel",
-              style: GoogleFonts.poppins(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+              style: GoogleFonts.poppins(),
             ),
           ),
 
@@ -204,9 +198,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
             },
             child: Text(
               "Delete",
-              style: GoogleFonts.poppins(
-                color: Theme.of(context).colorScheme.tertiary,
-              ),
+              style: GoogleFonts.poppins(),
             ),
           ),
         ],

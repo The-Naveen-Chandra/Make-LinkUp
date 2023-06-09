@@ -12,4 +12,9 @@ ThemeData darkTheme = ThemeData(
     secondary: Colors.grey[800]!,
     tertiary: Colors.grey[300]!,
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Colors.white,
+    ),
+  ),
 );
