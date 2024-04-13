@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/components/linkup_post.dart';
 import 'package:linkup_app/components/my_drawer.dart';
 import 'package:linkup_app/components/my_textfield.dart';
-import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -85,9 +86,10 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: signOutUser,
+            onPressed: () {},
             icon: const Icon(
-              Icons.logout,
+              CupertinoIcons.chat_bubble_2,
+              size: 30,
             ),
           ),
         ],

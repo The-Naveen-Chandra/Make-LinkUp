@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     // Navigate to the Username and Bio screen
-    // ignore: use_build_context_synchronously
+
     Navigator.push(
       context,
       MaterialPageRoute(
