@@ -24,8 +24,42 @@ class _HomeScreenState extends State<HomeScreen> {
   final textController = TextEditingController();
 
   // sign out the user
-  void signOutUser() async {
-    await FirebaseAuth.instance.signOut();
+  void signOutUser(BuildContext context) async {
+    final confirm = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Confirm Sign Out',
+          style: GoogleFonts.poppins(),
+        ),
+        content: Text(
+          'Are you sure you want to sign out?',
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.poppins(),
+            ),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: Text(
+              'Yes, sign out',
+              style: GoogleFonts.poppins(
+                color: Colors.red[300],
+              ),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm) {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 
   // post message on the LinkUp
@@ -96,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: MyDrawer(
         onProfileTap: goToProfileScreen,
-        onSignOut: signOutUser,
+        onSignOut: () => signOutUser(context),
       ),
       body: Column(
         children: [
@@ -139,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // post message
           Padding(
-            padding: const EdgeInsets.only(left: 25, top: 25, bottom: 20),
+            padding: const EdgeInsets.only(left: 25, top: 12, bottom: 12),
             child: Row(
               children: [
                 //textfield
@@ -176,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
         ],
       ),
     );
