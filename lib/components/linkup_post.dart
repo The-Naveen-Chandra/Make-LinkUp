@@ -91,6 +91,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
           style: GoogleFonts.poppins(),
         ),
         content: TextField(
+          cursorColor: Theme.of(context).colorScheme.tertiary,
           controller: _commentTextController,
           autofocus: true,
           decoration: InputDecoration(
@@ -206,6 +207,15 @@ class _LinkUpPostState extends State<LinkUpPost> {
     );
   }
 
+  Stream<int> commentCountStream() {
+    return FirebaseFirestore.instance
+        .collection("User Posts")
+        .doc(widget.postId)
+        .collection("Comments")
+        .snapshots()
+        .map((snapshot) => snapshot.docs.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -275,7 +285,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
 
           // button
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               // like button
               Column(
@@ -298,7 +308,7 @@ class _LinkUpPostState extends State<LinkUpPost> {
                 ],
               ),
 
-              const SizedBox(width: 10),
+              const SizedBox(width: 14),
 
               // comment button
               Column(
@@ -311,11 +321,22 @@ class _LinkUpPostState extends State<LinkUpPost> {
                   const SizedBox(height: 5),
 
                   // comment count
-                  Text(
-                    '0',
-                    style: GoogleFonts.poppins(
-                      color: Colors.grey,
-                    ),
+                  StreamBuilder<int>(
+                    stream: commentCountStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CupertinoActivityIndicator(),
+                        );
+                      }
+                      final count = snapshot.data ?? 0;
+                      return Text(
+                        '$count',
+                        style: GoogleFonts.poppins(
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
