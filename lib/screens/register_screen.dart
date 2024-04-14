@@ -9,7 +9,7 @@ import 'package:linkup_app/components/my_alert_dialog.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
-import 'package:linkup_app/services/auth_service.dart';
+import 'package:linkup_app/services/auth/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   final Function()? onPress;
@@ -50,7 +50,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     // Navigate to the Username and Bio screen
-
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -277,10 +276,12 @@ class _UsernameAndBioScreen extends State<UsernameAndBioScreen> {
 
       await FirebaseFirestore.instance
           .collection('Users')
-          .doc(userCredential.user!.email)
+          .doc(userCredential.user!.uid)
           .set({
-        'Username': usernameController.text,
-        'Bio': bioController.text,
+        'uid': userCredential.user!.uid,
+        'email': widget.email,
+        'username': usernameController.text,
+        'bio': bioController.text,
       });
 
       if (context.mounted) Navigator.pop(context);

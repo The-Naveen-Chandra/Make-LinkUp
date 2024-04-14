@@ -5,10 +5,12 @@ import 'package:linkup_app/components/my_list_tile.dart';
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
   final void Function()? onSignOut;
+  final void Function()? onSettingsTap;
   const MyDrawer({
     super.key,
-    required this.onProfileTap,
     required this.onSignOut,
+    required this.onProfileTap,
+    required this.onSettingsTap,
   });
 
   @override
@@ -40,6 +42,13 @@ class MyDrawer extends StatelessWidget {
             icon: CupertinoIcons.profile_circled,
             text: "Profile",
             onTap: onProfileTap,
+          ),
+
+          // profile list tile
+          MyListTile(
+            icon: CupertinoIcons.settings,
+            text: "Settings",
+            onTap: onSettingsTap,
           ),
 
           const Spacer(),

@@ -45,7 +45,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 250),
+                const SizedBox(height: 280),
 
                 MyButton(
                   text: "Get Started",

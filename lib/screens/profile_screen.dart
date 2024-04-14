@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // update in firestore
     if (newValue.trim().isNotEmpty) {
       // only update if there is something in the textfield
-      await userCollection.doc(currentUser.email).update({
+      await userCollection.doc(currentUser.uid).update({
         field: newValue,
       });
     }
@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection("Users")
-            .doc(currentUser.email)
+            .doc(currentUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
           // get the user data
@@ -151,15 +151,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // username
                 TextBox(
                   sectionName: "Username",
-                  text: userData['Username'],
-                  onPressed: () => editField("Username"),
+                  text: userData['username'],
+                  onPressed: () => editField("username"),
                 ),
 
                 // bio
                 TextBox(
                   sectionName: "Bio",
-                  text: userData['Bio'],
-                  onPressed: () => editField("Bio"),
+                  text: userData['bio'],
+                  onPressed: () => editField("bio"),
                 ),
 
                 const SizedBox(height: 50),
