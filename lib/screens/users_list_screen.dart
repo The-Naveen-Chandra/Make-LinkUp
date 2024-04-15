@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:linkup_app/components/users_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:linkup_app/components/linkup_logo.dart';
+
+import 'package:linkup_app/components/user_title.dart';
+import 'package:linkup_app/screens/chat_screen.dart';
 import 'package:linkup_app/services/chat/chat_services.dart';
 
 class UsersListScreen extends StatefulWidget {
@@ -11,8 +15,9 @@ class UsersListScreen extends StatefulWidget {
 }
 
 class _UsersListScreenState extends State<UsersListScreen> {
-  // chat service instance
+  // service instances
   final ChatService _chatService = ChatService();
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +26,74 @@ class _UsersListScreenState extends State<UsersListScreen> {
       appBar: AppBar(
         leading: const BackButton(),
         centerTitle: true,
-        title: Text(
-          "All Users",
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        title: const LinkUpLogo(chatUp: true),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 25.0),
+            child: Icon(
+              Icons.add,
+              color: Colors.transparent,
+            ),
+          )
+        ],
       ),
-      body: UsersList(chatService: _chatService),
+      body: _buildUsersList(),
     );
+  }
+
+  Widget _buildUsersList() {
+    return StreamBuilder(
+      stream: _chatService.getUsersStream(),
+      builder: (context, snapshot) {
+        // error checking
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Error: ${snapshot.error}",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          );
+        }
+
+        // loading state
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        // return list view
+        return ListView(
+          children: snapshot.data!
+              .map((userData) => _buildUsersListItem(userData, context))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildUsersListItem(
+      Map<String, dynamic> userData, BuildContext context) {
+    // display all users except the current user
+    if (userData["email"] != currentUser.email) {
+      return UserTile(
+        username: userData["username"] ?? "No username",
+        email: userData["email"] ?? "No email",
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatScreen(
+                username: userData["username"] ?? "No username",
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

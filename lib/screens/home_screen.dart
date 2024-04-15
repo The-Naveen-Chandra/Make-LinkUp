@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:linkup_app/components/linkup_logo.dart';
 
 import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/components/linkup_post.dart';
@@ -116,23 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              CupertinoIcons.link,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              "LinkUp",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
+        title: const LinkUpLogo(),
         centerTitle: true,
         actions: [
           IconButton(
@@ -140,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UsersListScreen(),
+                  builder: (context) => const UsersListScreen(),
                 ),
               );
             },
