@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:linkup_app/components/linkup_logo.dart';
 
 import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/components/linkup_post.dart';
 import 'package:linkup_app/components/my_drawer.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/screens/profile_screen.dart';
+import 'package:linkup_app/screens/setting_screen.dart';
+import 'package:linkup_app/screens/users_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,8 +27,42 @@ class _HomeScreenState extends State<HomeScreen> {
   final textController = TextEditingController();
 
   // sign out the user
-  void signOutUser() async {
-    await FirebaseAuth.instance.signOut();
+  void signOutUser(BuildContext context) async {
+    final confirm = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Confirm Sign Out',
+          style: GoogleFonts.poppins(),
+        ),
+        content: Text(
+          'Are you sure you want to sign out?',
+          style: GoogleFonts.poppins(),
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.poppins(),
+            ),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: Text(
+              'Yes, sign out',
+              style: GoogleFonts.poppins(
+                color: Colors.red[300],
+              ),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm) {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 
   // post message on the LinkUp
@@ -61,32 +98,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // navigate to profile screen
+  void goToSettingScreen() {
+    // pop menu drawer
+    Navigator.pop(context);
+
+    // go to profile page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SettingScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              CupertinoIcons.link,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              "LinkUp",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
+        title: const LinkUpLogo(),
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UsersListScreen(),
+                ),
+              );
+            },
             icon: const Icon(
               CupertinoIcons.chat_bubble_2,
               size: 30,
@@ -96,7 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: MyDrawer(
         onProfileTap: goToProfileScreen,
-        onSignOut: signOutUser,
+        onSignOut: () => signOutUser(context),
+        onSettingsTap: goToSettingScreen,
       ),
       body: Column(
         children: [
@@ -139,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // post message
           Padding(
-            padding: const EdgeInsets.only(left: 25, top: 25, bottom: 20),
+            padding: const EdgeInsets.only(left: 25, top: 12, bottom: 12),
             child: Row(
               children: [
                 //textfield
@@ -176,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
         ],
       ),
     );

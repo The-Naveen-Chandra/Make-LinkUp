@@ -8,7 +8,7 @@ import 'package:linkup_app/components/my_alert_dialog.dart';
 import 'package:linkup_app/components/my_button.dart';
 import 'package:linkup_app/components/my_textfield.dart';
 import 'package:linkup_app/components/square_tile.dart';
-import 'package:linkup_app/services/auth_service.dart';
+import 'package:linkup_app/services/auth/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function()? onPress;
