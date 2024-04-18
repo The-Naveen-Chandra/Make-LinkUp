@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserTile extends StatelessWidget {
   final String username;
@@ -16,7 +17,12 @@ class UserTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.all(12.0),
+        margin: const EdgeInsets.only(
+          top: 5,
+          left: 25,
+          right: 25,
+          bottom: 5,
+        ),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
@@ -31,10 +37,21 @@ class UserTile extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
+            const SizedBox(width: 16),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(username),
-                Text(email),
+                Text(
+                  username,
+                  style: GoogleFonts.poppins(),
+                ),
+                Text(
+                  email,
+                  style: GoogleFonts.poppins(
+                    fontSize: 11.0,
+                    color: Colors.grey[600],
+                  ),
+                ),
               ],
             ),
           ],

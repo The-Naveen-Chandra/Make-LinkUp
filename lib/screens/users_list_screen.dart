@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:linkup_app/components/linkup_logo.dart';
 
-import 'package:linkup_app/components/user_title.dart';
 import 'package:linkup_app/screens/chat_screen.dart';
+import 'package:linkup_app/components/user_title.dart';
 import 'package:linkup_app/services/chat/chat_services.dart';
 
 class UsersListScreen extends StatefulWidget {
@@ -60,15 +61,45 @@ class _UsersListScreenState extends State<UsersListScreen> {
         // loading state
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CupertinoActivityIndicator(),
           );
         }
 
         // return list view
-        return ListView(
-          children: snapshot.data!
-              .map((userData) => _buildUsersListItem(userData, context))
-              .toList(),
+        return Column(
+          children: [
+            // search bar
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 25.0,
+                vertical: 10.0,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+                vertical: 10.0,
+              ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    CupertinoIcons.search,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: snapshot.data!
+                    .map((userData) => _buildUsersListItem(userData, context))
+                    .toList(),
+              ),
+            ),
+          ],
         );
       },
     );

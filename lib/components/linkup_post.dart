@@ -324,11 +324,6 @@ class _LinkUpPostState extends State<LinkUpPost> {
                   StreamBuilder<int>(
                     stream: commentCountStream(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CupertinoActivityIndicator(),
-                        );
-                      }
                       final count = snapshot.data ?? 0;
                       return Text(
                         '$count',
