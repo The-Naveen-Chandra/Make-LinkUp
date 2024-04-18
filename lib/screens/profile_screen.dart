@@ -41,6 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: GoogleFonts.poppins(
             color: Colors.white,
           ),
+          cursorColor: Theme.of(context).colorScheme.tertiary,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "Enter new $field",
@@ -161,19 +162,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: userData['bio'],
                   onPressed: () => editField("bio"),
                 ),
-
-                const SizedBox(height: 50),
-
-                // // user posts
-                // Padding(
-                //   padding: const EdgeInsets.only(left: 25.0),
-                //   child: Text(
-                //     "My details",
-                //     style: GoogleFonts.poppins(
-                //       color: Colors.grey[600],
-                //     ),
-                //   ),
-                // ),
               ],
             );
           } else if (snapshot.hasError) {
