@@ -223,14 +223,16 @@ class _UsersListScreenState extends State<UsersListScreen> {
     // display all users except the current user
     if (userData["email"] != currentUser.email) {
       return UserTile(
-        username: userData["username"] ?? "No username",
-        email: userData["email"] ?? "No email",
+        username: userData["username"],
+        email: userData["email"],
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ChatScreen(
-                username: userData["username"] ?? "No username",
+                receiverID: userData["uid"],
+                username: userData["username"],
+                receiverEmail: userData["email"],
               ),
             ),
           );
