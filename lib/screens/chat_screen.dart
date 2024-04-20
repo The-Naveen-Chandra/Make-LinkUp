@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:linkup_app/components/chat_bubble.dart';
 import 'package:linkup_app/components/my_textfield.dart';
+import 'package:linkup_app/helper/helper_methods.dart';
 import 'package:linkup_app/services/chat/chat_services.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -107,11 +110,27 @@ class ChatScreen extends StatelessWidget {
     // align message according to right if the sender is current user, otherwise left
 
     return Container(
-      padding: const EdgeInsets.all(6),
       alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Text(
-        data["message"],
-        style: GoogleFonts.poppins(),
+      child: Column(
+        crossAxisAlignment:
+            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          ChatBubble(
+            isCurrentUser: isCurrentUser,
+            message: data["message"],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              formatChatTimestamp(
+                data['timestamp'],
+              ),
+              style: GoogleFonts.poppins(
+                fontSize: 8,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
