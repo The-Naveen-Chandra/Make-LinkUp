@@ -91,10 +91,46 @@ class ChatScreen extends StatelessWidget {
           );
         }
 
+        Map<String, List<DocumentSnapshot>> groupedMessages = {};
+        for (var doc in snapshot.data!.docs) {
+          DateTime timestamp = (doc['timestamp'] as Timestamp).toDate();
+          String formattedDate = formatDate(timestamp, snapshot.data!.docs);
+          if (!groupedMessages.containsKey(formattedDate)) {
+            groupedMessages[formattedDate] = [];
+          }
+          groupedMessages[formattedDate]!.add(doc);
+        }
         // return list view
+        // Build message list with grouped messages
         return ListView(
-          children:
-              snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
+          children: groupedMessages.entries.map((entry) {
+            String date = entry.key;
+            List<DocumentSnapshot> messages = entry.value;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Display date as a header
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    date,
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+
+                // Display messages for the date
+                Column(
+                  children: messages.map((doc) {
+                    return _buildMessageItem(doc);
+                  }).toList(),
+                ),
+              ],
+            );
+          }).toList(),
         );
       },
     );
@@ -111,26 +147,9 @@ class ChatScreen extends StatelessWidget {
 
     return Container(
       alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment:
-            isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          ChatBubble(
-            isCurrentUser: isCurrentUser,
-            message: data["message"],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              formatChatTimestamp(
-                data['timestamp'],
-              ),
-              style: GoogleFonts.poppins(
-                fontSize: 8,
-              ),
-            ),
-          ),
-        ],
+      child: ChatBubble(
+        isCurrentUser: isCurrentUser,
+        message: data["message"],
       ),
     );
   }

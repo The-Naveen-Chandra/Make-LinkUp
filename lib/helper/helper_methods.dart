@@ -23,26 +23,26 @@ String formatData(Timestamp timestamp) {
   return formattedData;
 }
 
-String formatChatTimestamp(Timestamp timestamp) {
-  DateTime dateTime = timestamp.toDate();
+String formatDate(DateTime dateTime, List<DocumentSnapshot> messages) {
   DateTime now = DateTime.now();
+  DateTime todayStart = DateTime(now.year, now.month, now.day);
+  DateTime yesterdayStart = DateTime(now.year, now.month, now.day - 1);
 
-  // Check if the timestamp is from today
-  if (dateTime.year == now.year &&
-      dateTime.month == now.month &&
-      dateTime.day == now.day) {
-    // Format time with AM/PM for today's messages
-    return DateFormat.jm().format(dateTime); // E.g., '6:00 PM'
+  if (dateTime.isAfter(todayStart)) {
+    // Find the newest message timestamp for today
+    DateTime newestMessageTime = DateTime.fromMillisecondsSinceEpoch(0);
+    for (var doc in messages) {
+      DateTime messageTime = (doc['timestamp'] as Timestamp).toDate();
+      if (messageTime.isAfter(newestMessageTime) && messageTime.isBefore(now)) {
+        newestMessageTime = messageTime;
+      }
+    }
+    String timeFormat =
+        DateFormat.jm().format(newestMessageTime); // Format time as "h:mm a"
+    return "Today $timeFormat";
+  } else if (dateTime.isAfter(yesterdayStart)) {
+    return "Yesterday";
+  } else {
+    return DateFormat('MMMM dd, yyyy').format(dateTime);
   }
-
-  // Check if the timestamp is from yesterday
-  DateTime yesterday = now.subtract(const Duration(days: 1));
-  if (dateTime.year == yesterday.year &&
-      dateTime.month == yesterday.month &&
-      dateTime.day == yesterday.day) {
-    return 'Yesterday';
-  }
-
-  // For older dates, return in dd-MM-yyyy format
-  return DateFormat('dd-MM-yyyy').format(dateTime); // E.g., '01-01-2024'
 }
